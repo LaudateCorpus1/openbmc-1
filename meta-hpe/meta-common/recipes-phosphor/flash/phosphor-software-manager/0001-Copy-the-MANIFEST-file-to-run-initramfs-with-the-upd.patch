@@ -1,0 +1,24 @@
+From 4eb5d93e75bf1dacf2ff73aeb825807c193a10eb Mon Sep 17 00:00:00 2001
+From: Renee Rodgers <renee.rodgers@hpe.com>
+Date: Fri, 5 Feb 2021 09:50:08 -0600
+Subject: [PATCH] Copy the MANIFEST file to /run/initramfs with the update
+ images so that the update script can determine the MachineName
+
+---
+ static/flash.cpp | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/static/flash.cpp b/static/flash.cpp
+index 101828b..a2aaa88 100644
+--- a/static/flash.cpp
++++ b/static/flash.cpp
+@@ -36,6 +36,9 @@ void Activation::flashWrite()
+         fs::copy_file(uploadDir / versionId / bmcImage, toPath / bmcImage,
+                       fs::copy_options::overwrite_existing);
+     }
++
++    fs::copy_file(uploadDir / versionId / "MANIFEST", toPath / "MANIFEST",
++                  fs::copy_options::overwrite_existing);
+ }
+ 
+ void Activation::onStateChanges(sdbusplus::message::message& /*msg*/)

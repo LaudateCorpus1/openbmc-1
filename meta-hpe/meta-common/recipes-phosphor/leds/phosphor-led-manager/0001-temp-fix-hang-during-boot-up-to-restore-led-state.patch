@@ -1,0 +1,22 @@
+From 534e3c1150418e44ebe489fde4b872435d290bfb Mon Sep 17 00:00:00 2001
+From: Gilbert Chen <gilbert.chen@hpe.com>
+Date: Mon, 9 Nov 2020 20:04:35 +0800
+Subject: [PATCH] temp fix: hang during boot up to restore led state
+
+---
+ group.hpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/group.hpp b/group.hpp
+index 7bf97c6..be2f8ac 100644
+--- a/group.hpp
++++ b/group.hpp
+@@ -47,7 +47,7 @@ class Group :
+         // Initialize Asserted property value
+         if (serialize.getGroupSavedState(objPath))
+         {
+-            asserted(true);
++            //asserted(true);
+         }
+ 
+         // Emit deferred signal.

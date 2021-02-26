@@ -1,0 +1,31 @@
+From 5cf39f607b45999465f43344df6100e07de99fb3 Mon Sep 17 00:00:00 2001
+From: Jorge Cisneros <jorge.cisneros@hpe.com>
+Date: Mon, 26 Oct 2020 15:25:07 +0000
+Subject: [PATCH] Dont mark sensor bad
+
+---
+ src/IpmbSensor.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/IpmbSensor.cpp b/src/IpmbSensor.cpp
+index ce735d7..08ad294 100755
+--- a/src/IpmbSensor.cpp
++++ b/src/IpmbSensor.cpp
+@@ -714,7 +714,7 @@ void IpmbSensor::read(void)
+                 const int& status = std::get<0>(response);
+                 if (ec || status)
+                 {
+-                    incrementError();
++                    //incrementError();
+                     read();
+                     return;
+                 }
+@@ -730,7 +730,7 @@ void IpmbSensor::read(void)
+                 }
+                 if (data.empty())
+                 {
+-                    incrementError();
++                    //incrementError();
+                     read();
+                     return;
+                 }

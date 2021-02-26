@@ -1,0 +1,5 @@
+DEVPATH=/dev/input/by-path/platform-ahb@80000000:xreg_keys-event
+KEY=200
+POLARITY=1
+TARGET=uid-btn.service
+EXTRA_ARGS=--continue

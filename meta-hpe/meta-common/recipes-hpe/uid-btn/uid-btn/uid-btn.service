@@ -1,0 +1,11 @@
+[Unit]
+Description=UI Button Service
+Wants=xyz.openbmc_project.LED.GroupManager.service
+After=xyz.openbmc_project.LED.GroupManager.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "uid-btn.sh %i"
+SyslogIdentifier=uid-btn
+

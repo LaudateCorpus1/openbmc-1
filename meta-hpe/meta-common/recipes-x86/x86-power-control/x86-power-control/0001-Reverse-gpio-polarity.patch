@@ -1,0 +1,58 @@
+From 1a350a1a81f34ad32f827fa42d8c3f63017845fe Mon Sep 17 00:00:00 2001
+From: John Chung <john.chung@hpe.com>
+Date: Fri, 16 Oct 2020 03:18:20 +0800
+Subject: [PATCH] Reverse gpio-polarity
+
+---
+ power-control-x86/src/power_control.cpp | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/power-control-x86/src/power_control.cpp b/power-control-x86/src/power_control.cpp
+index 30844d3..9604ed4 100644
+--- a/power-control-x86/src/power_control.cpp
++++ b/power-control-x86/src/power_control.cpp
+@@ -1083,17 +1083,17 @@ static int setGPIOOutputForMs(const std::string& name, const int value,
+ 
+ static void powerOn()
+ {
+-    setGPIOOutputForMs(power_control::powerOutName, 0, powerPulseTimeMs);
++    setGPIOOutputForMs(power_control::powerOutName, 1, powerPulseTimeMs);
+ }
+ 
+ static void gracefulPowerOff()
+ {
+-    setGPIOOutputForMs(power_control::powerOutName, 0, powerPulseTimeMs);
++    setGPIOOutputForMs(power_control::powerOutName, 1, powerPulseTimeMs);
+ }
+ 
+ static void forcePowerOff()
+ {
+-    if (setGPIOOutputForMs(power_control::powerOutName, 0,
++    if (setGPIOOutputForMs(power_control::powerOutName, 1,
+                            forceOffPulseTimeMs) < 0)
+     {
+         return;
+@@ -1130,7 +1130,7 @@ static void forcePowerOff()
+ 
+ static void reset()
+ {
+-    setGPIOOutputForMs(power_control::resetOutName, 0, resetPulseTimeMs);
++    setGPIOOutputForMs(power_control::resetOutName, 1, resetPulseTimeMs);
+ }
+ 
+ static void gracefulPowerOffTimerStart()
+@@ -2288,12 +2288,12 @@ int main(int argc, char* argv[])
+ 
+     // Initialize POWER_OUT and RESET_OUT GPIO.
+     gpiod::line line;
+-    if (!power_control::setGPIOOutput(power_control::powerOutName, 1, line))
++    if (!power_control::setGPIOOutput(power_control::powerOutName, 0, line))
+     {
+         return -1;
+     }
+ 
+-    if (!power_control::setGPIOOutput(power_control::resetOutName, 1, line))
++    if (!power_control::setGPIOOutput(power_control::resetOutName, 0, line))
+     {
+         return -1;
+     }

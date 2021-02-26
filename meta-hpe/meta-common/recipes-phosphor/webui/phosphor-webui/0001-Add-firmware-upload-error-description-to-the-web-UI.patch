@@ -1,0 +1,26 @@
+From 315b941e01d2054101c71a8063a6e79c8fdde513 Mon Sep 17 00:00:00 2001
+From: Renee Rodgers <renee.rodgers@hpe.com>
+Date: Fri, 11 Sep 2020 15:40:10 -0500
+Subject: [PATCH] Add firmware upload error description to the web UI
+
+---
+ app/configuration/controllers/firmware-controller.js | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/app/configuration/controllers/firmware-controller.js b/app/configuration/controllers/firmware-controller.js
+index 451c16c..b721025 100644
+--- a/app/configuration/controllers/firmware-controller.js
++++ b/app/configuration/controllers/firmware-controller.js
+@@ -190,7 +190,11 @@ window.angular && (function(angular) {
+                   function(error) {
+                     $scope.uploading = false;
+                     console.log(error);
+-                    toastService.error('Unable to upload image file');
++					if (error.data && error.data.data && error.data.data.description) {
++                    	toastService.error('Unable to upload image file.&#13' + error.data.data.description + '.');
++					} else {
++                    	toastService.error('Unable to upload image file');
++					}
+                   });
+         }
+       };

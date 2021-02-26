@@ -1,0 +1,76 @@
+From aae9884ff537f1e76e45ffbb00eeefc6a0bdf837 Mon Sep 17 00:00:00 2001
+From: Renee Rodgers <renee.rodgers@hpe.com>
+Date: Mon, 8 Feb 2021 13:45:28 -0600
+Subject: [PATCH] Add HPE optional flash images
+
+---
+ images.hpp        |  3 +--
+ meson.build       |  4 ++--
+ meson_options.txt |  2 +-
+ static/flash.cpp  | 11 +++++++++++
+ 4 files changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/images.hpp b/images.hpp
+index 8b27ac5..ca7368d 100644
+--- a/images.hpp
++++ b/images.hpp
+@@ -12,8 +12,7 @@ namespace image
+ 
+ // BMC flash image file name list.
+ const std::vector<std::string> bmcImages = {"image-kernel", "image-rofs",
+-                                            "image-rwfs", "image-u-boot",
+-                                            "image-section"};
++                                            "image-rwfs"};
+ 
+ // BMC flash image file name list for full flash image (image-bmc)
+ const std::string bmcFullImages = {"image-bmc"};
+diff --git a/meson.build b/meson.build
+index 96748fb..85d6ff1 100644
+--- a/meson.build
++++ b/meson.build
+@@ -63,8 +63,8 @@ conf.set_quoted('MANIFEST_FILE_NAME', get_option('manifest-file-name'))
+ conf.set_quoted('MEDIA_DIR', get_option('media-dir'))
+ optional_array = get_option('optional-images')
+ optional_images = ''
+-foreach optiona_image : optional_array
+-    optional_images = ' '.join([optional_images, optiona_image])
++foreach optional_image : optional_array
++    optional_images = ' '.join([optional_images, optional_image])
+ endforeach
+ conf.set_quoted('OPTIONAL_IMAGES', optional_images)
+ conf.set_quoted('PUBLICKEY_FILE_NAME', get_option('publickey-file-name'))
+diff --git a/meson_options.txt b/meson_options.txt
+index d37e681..597d95f 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -55,7 +55,7 @@ option(
+ 
+ option(
+     'optional-images', type: 'array',
+-    choices: ['image-hostfw'],
++    choices: ['image-hostfw', 'image-section', 'image-section2', 'image-u-boot'],
+     value: [],
+     description: 'A list of additional image files in the BMC tarball.',
+ )
+diff --git a/static/flash.cpp b/static/flash.cpp
+index a2aaa88..72e20d0 100644
+--- a/static/flash.cpp
++++ b/static/flash.cpp
+@@ -39,6 +39,17 @@ void Activation::flashWrite()
+ 
+     fs::copy_file(uploadDir / versionId / "MANIFEST", toPath / "MANIFEST",
+                   fs::copy_options::overwrite_existing);
++
++    // Copy over any optional images
++    auto optionalImageList = getOptionalImages();
++    for (const auto& optionalImage : optionalImageList)
++    {
++        if (fs::exists(uploadDir / versionId / optionalImage))
++        {
++            fs::copy_file(uploadDir / versionId / optionalImage, toPath / optionalImage,
++                          fs::copy_options::overwrite_existing);
++        }
++    } 
+ }
+ 
+ void Activation::onStateChanges(sdbusplus::message::message& /*msg*/)

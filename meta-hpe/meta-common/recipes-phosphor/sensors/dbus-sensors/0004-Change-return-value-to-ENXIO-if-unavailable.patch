@@ -1,0 +1,49 @@
+From 23089c0d571aaef12cd3f8f3dd79d552938acea3 Mon Sep 17 00:00:00 2001
+From: Jorge Cisneros <jorge.cisneros@hpe.com>
+Date: Tue, 22 Sep 2020 21:07:02 +0000
+Subject: [PATCH] [PATCH] Change return value to -ENXIO if unavailable
+
+---
+ src/IpmbSensor.cpp | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/IpmbSensor.cpp b/src/IpmbSensor.cpp
+index 79dbd91..ce735d7 100755
+--- a/src/IpmbSensor.cpp
++++ b/src/IpmbSensor.cpp
+@@ -604,7 +604,7 @@ void IpmbSensor::read(void)
+             // clear present flag while host off
+             present = false;
+             isPreviousPowerStateOff = true;
+-            updateValue(0);
++            updateValue(-ENXIO);
+             read();
+             return;
+         }
+@@ -761,7 +761,7 @@ void IpmbSensor::read(void)
+                     (cpu_dts == nmDataUnavailable) ||
+                     (cpu_dts == nmReserved))
+                     {
+-                        value = 0;
++                        value = -ENXIO;
+                     }
+                     else
+                     {
+@@ -798,7 +798,7 @@ void IpmbSensor::read(void)
+                         (value == nmDataUnavailable) ||
+                         (value == nmReserved))
+                         {
+-                            value = 0;
++                            value = -ENXIO;
+                         }
+                     }
+                     else
+@@ -833,7 +833,7 @@ void IpmbSensor::read(void)
+                         (value == nmDataUnavailable) ||
+                         (value == nmReserved))
+                         {
+-                            value = 0;
++                            value = -ENXIO;
+                         }
+                     }
+                     else
