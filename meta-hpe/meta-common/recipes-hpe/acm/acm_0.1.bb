@@ -4,7 +4,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 BRANCH = "main"
 SRC_URI = "git://github.com/HewlettPackard/openbmc-acm.git;branch=${BRANCH}"
-SRCREV = "26d36d9fbcd7407bebe06cc31088b7f889ad550d"
+SRCREV = "4adb905cf7d264af03924b4a1c375bb1d44a575b"
 PV = "0.1+git${SRCPV}"
 S = "${WORKDIR}/git/"
 
