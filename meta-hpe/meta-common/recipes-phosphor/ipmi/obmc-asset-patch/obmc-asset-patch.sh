@@ -1,7 +1,9 @@
 #!/bin/sh
 
+eeprom=`ls /sys/bus/i2c/devices/*/eeprom`
+
 function yww_fetch_year() {
-  case `hexdump -s 4 -n 1 /sys/bus/i2c/devices/2-0050/eeprom -v -e '"%c"'` in
+  case `hexdump -s 4 -n 1 ${eeprom} -v -e '"%c"'` in
     6) echo 2016;;
     7) echo 2017;;
     8) echo 2018;;
@@ -17,8 +19,8 @@ function yww_fetch_year() {
 }
 
 function yww_fetch_week() {
-  ww_hi=`hexdump -s 5 -n 1 /sys/bus/i2c/devices/2-0050/eeprom -v -e '"%c"'`
-  ww_lo=`hexdump -s 6 -n 1 /sys/bus/i2c/devices/2-0050/eeprom -v -e '"%c"'`
+  ww_hi=`hexdump -s 5 -n 1 ${eeprom} -v -e '"%c"'`
+  ww_lo=`hexdump -s 6 -n 1 ${eeprom} -v -e '"%c"'`
   ww=$((ww_hi))$((ww_lo))
   if [ $ww -ge 1 ] && [ $ww -le 53 ]; then echo $ww; else echo 1; fi
 }
@@ -86,7 +88,7 @@ else
   echo "mfgdate: null value in eeprom, keep default"
 fi
 
-serial_pca=`hexdump -s 144 -n 16 /sys/bus/i2c/devices/2-0050/eeprom -v -e '1/16 "%s"'`
+serial_pca=`hexdump -s 144 -n 16 ${eeprom} -v -e '1/16 "%s"'`
 if [ "s${serial_pca}" != "s" ]; then
   echo "pca serial:set to $serial_pca"
   busctl set-property xyz.openbmc_project.Inventory.Manager /xyz/openbmc_project/inventory/system/chassis/motherboard xyz.openbmc_project.Inventory.Decorator.Asset SerialNumber s "$serial_pca"
@@ -94,7 +96,7 @@ else
   echo "pca serial: null value in eeprom, keep default"
 fi
 
-serial_sys=`hexdump -s 1 -n 16 /sys/bus/i2c/devices/2-0050/eeprom -v -e '1/16 "%s"'`
+serial_sys=`hexdump -s 1 -n 16 ${eeprom} -v -e '1/16 "%s"'`
 if [ "s${serial_sys}" != "s" ]; then
   echo "sys serial:set to $serial_sys"
   busctl set-property xyz.openbmc_project.Inventory.Manager /xyz/openbmc_project/inventory/system xyz.openbmc_project.Inventory.Decorator.Asset SerialNumber s "$serial_sys"
@@ -103,7 +105,7 @@ else
 fi
 
 # "089455-001"
-partnumber_pca=`hexdump -s 160 -n 16 /sys/bus/i2c/devices/2-0050/eeprom -v -e '1/16 "%s"'`
+partnumber_pca=`hexdump -s 160 -n 16 ${eeprom} -v -e '1/16 "%s"'`
 if [ "p${partnumber_pca}" != "p" ]; then
   echo "pca part number: set to $partnumber_pca"
   busctl set-property xyz.openbmc_project.Inventory.Manager /xyz/openbmc_project/inventory/system/chassis/motherboard xyz.openbmc_project.Inventory.Decorator.Asset PartNumber s "$partnumber_pca"
@@ -111,7 +113,7 @@ else
   echo "pca part number: null value in eeprom, keep default"
 fi
 
-partnumber_sys=`hexdump -s 109 -n 16 /sys/bus/i2c/devices/2-0050/eeprom -v -e '1/16 "%s"'`
+partnumber_sys=`hexdump -s 109 -n 16 ${eeprom} -v -e '1/16 "%s"'`
 if [ "p${partnumber_sys}" != "p" ]; then
   echo "sys part number: set to $partnumber_sys"
   busctl set-property xyz.openbmc_project.Inventory.Manager /xyz/openbmc_project/inventory/system xyz.openbmc_project.Inventory.Decorator.Asset Model s "$partnumber_sys"
