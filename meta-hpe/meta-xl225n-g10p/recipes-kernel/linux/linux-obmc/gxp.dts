@@ -253,13 +253,13 @@
       #address-cells = <1>;
       #size-cells = <0>;
 
-      at24c02@54 {
-        compatible = "at24,24c02";
+      24c32@54 {
+        compatible = "atmel,24c32";
         pagesize = <8>;
         reg = <0x54>;
       };
-      at24c02@55 {
-        compatible = "at24,24c02";
+      24c32@55 {
+        compatible = "atmel,24c32";
         pagesize = <8>;
         reg = <0x55>;
       };
