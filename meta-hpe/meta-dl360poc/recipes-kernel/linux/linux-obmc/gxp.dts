@@ -231,8 +231,8 @@
       #address-cells = <1>;
       #size-cells = <0>;
 
-      24c32@50 {
-        compatible = "atmel,24c32";
+      24c02@50 {
+        compatible = "atmel,24c02";
         pagesize = <8>;
         reg = <0x50>;
       };
