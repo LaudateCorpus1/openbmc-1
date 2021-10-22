@@ -311,7 +311,7 @@
   "Type": "Chassis",
   "xyz.openbmc_project.Inventory.Decorator.Asset": {
     "Manufacturer": "$PRODUCT_MANUFACTURER",
-    "Model": "DL325 Gen10 Plus",
+    "Model": "DL325 Gen10 Plus v2",
     "PartNumber": "$PCA_PART_NUMBER",
     "SerialNumber": "$PCA_SERIAL_NUMBER"
   },
@@ -319,7 +319,7 @@
     "AssetTag": "HPE-OBMC-001"
   },
   "xyz.openbmc_project.Inventory.Item": {
-    "PrettyName": "DL325 Gen10 Plus"
+    "PrettyName": "DL325 Gen10 Plus v2"
   },
   "xyz.openbmc_project.Inventory.Item.Board.Motherboard": {
     "ProductId": "$SERVER_ID"
